@@ -11,6 +11,7 @@ class ToDoApp : Application() {
     private val koinModule = module {
         single { ToDoRepository() }
         viewModel { RosterViewModel(get()) }
+        viewModel { (modelId: String) -> SingleModelViewModel(get(), modelId) }
     }
 
     override fun onCreate() {

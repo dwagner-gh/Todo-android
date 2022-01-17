@@ -3,16 +3,16 @@ package com.example.todo
 class ToDoRepository {
     var items = listOf(
         ToDoModel(
-            description = "Buy a copy of _Exploring Android_",
+            description = "Cleaning my room",
             isCompleted = true,
-            notes = "See https://wares.commonsware.com"
+            notes = "Nasty spot in the kitchen. Buy cleaning materials."
         ),
         ToDoModel(
-            description = "Complete all of the tutorials"
+            description = "Conquer the world"
         ),
         ToDoModel(
-            description = "Write an app for somebody in my community",
-            notes = "Talk to some people at non-profit organizations to see what they need!"
+            description = "Deepen knowledge of Kotlin",
+            notes = "Look for good resources such as books/eBooks and articles. Skill comes in handy as a developer."
         )
     )
 
@@ -23,4 +23,6 @@ class ToDoRepository {
             items + model
         }
     }
+
+    fun find(modelId: String) = items.find { it.id == modelId }
 }
