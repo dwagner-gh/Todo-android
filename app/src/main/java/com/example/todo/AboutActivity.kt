@@ -12,6 +12,6 @@ class AboutActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.aboutToolbar.title = getString(R.string.app_name)
-        binding.aboutText.loadUrl("file:///android_asset/about.html")
+        binding.aboutText.loadUrl("file:///android_asset/" + getString(R.string.about_html))
     }
 }
