@@ -9,4 +9,7 @@ class SingleModelViewModel(
 
     fun getModel() = repo.find(modelId)
     fun save(model: ToDoModel) = repo.save(model)
+    fun delete(model: ToDoModel) {
+        repo.delete(model)
+    }
 }

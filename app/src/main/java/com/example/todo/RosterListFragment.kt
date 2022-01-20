@@ -2,6 +2,7 @@ package com.example.todo
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -49,7 +50,7 @@ class RosterListFragment : Fragment() {
         }
         adapter.submitList(rosterViewModel.items)
         // hiding/showing empty view
-        binding?.empty?.visibility = if (adapter.itemCount == 0) View.VISIBLE else View.GONE
+        binding?.empty?.isVisible = adapter.itemCount == 0
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

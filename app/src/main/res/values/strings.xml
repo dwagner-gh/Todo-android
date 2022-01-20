@@ -11,4 +11,5 @@
     <string name="menu_save">Save</string>
     <string name="about_html">about.html</string>
     <string name="menu_add">Add</string>
+    <string name="menu_delete">Delete</string>
 </resources>
