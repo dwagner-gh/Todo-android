@@ -2,6 +2,8 @@ plugins {
   // defines which gradle plugin to use for building this module
   id 'com.android.application'
   id 'kotlin-android'
+  // generates classes so you can safely switch between fragments
+  // no passing of resource ids or bundles, can use arguments directly
   id 'androidx.navigation.safeargs.kotlin'
 }
 

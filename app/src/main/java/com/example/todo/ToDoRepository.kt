@@ -1,20 +1,9 @@
 package com.example.todo
 
 class ToDoRepository {
-    var items = listOf(
-        ToDoModel(
-            description = "Cleaning my room",
-            isCompleted = true,
-            notes = "Nasty spot in the kitchen. Buy cleaning materials."
-        ),
-        ToDoModel(
-            description = "Conquer the world"
-        ),
-        ToDoModel(
-            description = "Deepen knowledge of Kotlin",
-            notes = "Look for good resources such as books/eBooks and articles. Skill comes in handy as a developer."
-        )
-    )
+    var items = emptyList<ToDoModel>()
+
+    fun find(modelId: String?) = items.find { it.id == modelId }
 
     fun save(model: ToDoModel) {
         items = if (items.any { it.id == model.id }) {
@@ -24,5 +13,7 @@ class ToDoRepository {
         }
     }
 
-    fun find(modelId: String) = items.find { it.id == modelId }
+    fun delete(model: ToDoModel) {
+        items = items.filter { it.id != model.id }
+    }
 }

@@ -12,6 +12,14 @@
         <action
             android:id="@+id/displayModel"
             app:destination="@id/displayFragment" />
+        <action
+            android:id="@+id/addTodoItem"
+            app:destination="@id/editFragment" >
+            <!-- @null means actually null, and not "null" -->
+            <argument
+                android:name="modelId"
+                android:defaultValue="@null" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/displayFragment"
@@ -30,6 +38,7 @@
         android:label="@string/app_name" >
         <argument
             android:name="modelId"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

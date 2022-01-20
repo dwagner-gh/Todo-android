@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ToDo</string>
-    <string name="msg_empty">Platzhalter</string>
+    <string name="msg_empty">Auf das + Icon drücken, um neue Aufgaben hinzuzufügen!</string>
     <string name="menu_about">Über</string>
     <string name="is_completed">Aufgabe erledigt</string>
     <string name="created_on">Erstellt:</string>
@@ -10,4 +10,5 @@
     <string name="notes">Notizen</string>
     <string name="menu_save">Speichern</string>
     <string name="about_html">about-de.html</string>
+    <string name="menu_add">Hinzufügen</string>
 </resources>
