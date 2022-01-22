@@ -1,4 +1,4 @@
-package com.example.todo
+package com.example.todo.ui.display
 
 import android.os.Bundle
 import android.text.format.DateUtils
@@ -6,6 +6,8 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.todo.R
+import com.example.todo.SingleModelViewModel
 import com.example.todo.databinding.TodoDisplayBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf

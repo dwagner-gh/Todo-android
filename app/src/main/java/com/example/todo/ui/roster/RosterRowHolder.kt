@@ -1,6 +1,7 @@
-package com.example.todo
+package com.example.todo.ui.roster
 
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todo.repo.ToDoModel
 import com.example.todo.databinding.TodoRowBinding
 
 class RosterRowHolder(

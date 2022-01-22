@@ -1,6 +1,8 @@
 package com.example.todo
 
 import androidx.lifecycle.ViewModel
+import com.example.todo.repo.ToDoModel
+import com.example.todo.repo.ToDoRepository
 
 class SingleModelViewModel(
     private val repo: ToDoRepository,

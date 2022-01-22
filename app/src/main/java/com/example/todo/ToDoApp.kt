@@ -1,6 +1,8 @@
 package com.example.todo
 
 import android.app.Application
+import com.example.todo.repo.ToDoRepository
+import com.example.todo.ui.roster.RosterViewModel
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin

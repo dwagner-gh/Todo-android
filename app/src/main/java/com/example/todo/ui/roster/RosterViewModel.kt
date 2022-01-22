@@ -1,6 +1,8 @@
-package com.example.todo
+package com.example.todo.ui.roster
 
 import androidx.lifecycle.ViewModel
+import com.example.todo.repo.ToDoModel
+import com.example.todo.repo.ToDoRepository
 
 class RosterViewModel(private val repo: ToDoRepository) : ViewModel() {
     // original version contains a bug, saves() creates a new list in the repository

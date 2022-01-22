@@ -11,10 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDo">
         <activity
-            android:name="com.example.todo.AboutActivity"
+            android:name="com.example.todo.ui.AboutActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.todo.MainActivity"
+            android:name="com.example.todo.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.todo
+package com.example.todo.ui.edit
 
 import android.os.Bundle
 import android.view.*
@@ -10,6 +10,9 @@ import com.example.todo.databinding.TodoEditBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import androidx.core.content.getSystemService
+import com.example.todo.R
+import com.example.todo.SingleModelViewModel
+import com.example.todo.repo.ToDoModel
 
 class EditFragment : Fragment() {
 

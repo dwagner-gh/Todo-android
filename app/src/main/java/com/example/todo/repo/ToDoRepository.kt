@@ -1,4 +1,4 @@
-package com.example.todo
+package com.example.todo.repo
 
 class ToDoRepository {
     var items = emptyList<ToDoModel>()
