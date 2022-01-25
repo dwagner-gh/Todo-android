@@ -16,8 +16,29 @@ data class ToDoEntity(
     val createdOn: Instant = Instant.now(),
     val isCompleted: Boolean = false
 ) {
+    constructor(model: ToDoModel) : this(
+        id = model.id,
+        description = model.description,
+        isCompleted = model.isCompleted,
+        notes = model.notes,
+        createdOn = model.createdOn
+    )
+
+    fun toModel(): ToDoModel {
+        return ToDoModel(
+            id = id,
+            description = description,
+            isCompleted = isCompleted,
+            notes = notes,
+            createdOn = createdOn
+        )
+    }
+
     @Dao
     interface Store {
+        // does database access via SQL queries
+        // room executes database queries in background thread
+        // future changes to the query are streamed to the Flow object
         @Query("SELECT * FROM todos ORDER BY description")
         fun all(): Flow<List<ToDoEntity>>
         @Query("SELECT * FROM todos WHERE id = :modelId")
@@ -27,4 +48,5 @@ data class ToDoEntity(
         @Delete
         suspend fun delete(vararg entities: ToDoEntity)
     }
+
 }
