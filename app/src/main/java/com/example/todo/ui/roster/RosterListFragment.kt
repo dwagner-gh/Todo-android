@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.example.todo.R
 import com.example.todo.repo.ToDoModel
 import com.example.todo.databinding.TodoRosterBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlinx.coroutines.flow.collect
 
 class RosterListFragment : Fragment() {
 
@@ -50,9 +52,26 @@ class RosterListFragment : Fragment() {
                 )
             )
         }
-        adapter.submitList(rosterViewModel.items)
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            // lambda runs as a coroutine when views are visible, suspended when not visible
+            rosterViewModel.states.collect { state ->
+                // collects new states, as long as this coroutine runs
+                // (how is the collect call connected to the coroutine?)
+                adapter.submitList(state.items)
+                binding?.apply {
+                    when {
+                        state.items.isEmpty() -> {
+                            empty.visibility = View.VISIBLE
+                            empty.setText(R.string.msg_empty)
+                        }
+                        else -> empty.visibility = View.GONE
+                    }
+                }
+            }
+        }
         // hiding/showing empty view
-        binding?.empty?.isVisible = adapter.itemCount == 0
+        binding?.empty?.isVisible = false
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
