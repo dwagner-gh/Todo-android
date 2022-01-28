@@ -3,6 +3,7 @@ package com.example.todo
 import android.app.Application
 import com.example.todo.repo.ToDoDatabase
 import com.example.todo.repo.ToDoRepository
+import com.example.todo.ui.SingleModelViewModel
 import com.example.todo.ui.roster.RosterViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -17,13 +18,13 @@ import org.koin.dsl.module
 class ToDoApp : Application() {
     private val koinModule = module {
         single(named("appScope")) { CoroutineScope(SupervisorJob()) }
+        single { ToDoDatabase.newInstance(androidContext()) }
         single {
             ToDoRepository(
                 get<ToDoDatabase>().todoStore(),
                 get(named("appScope"))
             )
         }
-        single { ToDoDatabase.newInstance(androidContext()) }
         viewModel { RosterViewModel(get()) }
         viewModel { (modelId: String) -> SingleModelViewModel(get(), modelId) }
     }

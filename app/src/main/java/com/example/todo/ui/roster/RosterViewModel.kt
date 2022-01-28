@@ -41,8 +41,9 @@ class RosterViewModel(private val repo: ToDoRepository) : ViewModel() {
 //        }
 //    }
 
-
     fun save(model: ToDoModel) {
-        repo.save(model)
+        viewModelScope.launch {
+            repo.save(model)
+        }
     }
 }

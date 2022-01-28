@@ -19,6 +19,13 @@ android {
     }
 
     defaultConfig {
+        // saves different versions of room data base schema
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+
         applicationId "com.example.todo"
         minSdk 21
         targetSdk 31
@@ -60,12 +67,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     // dependency inversion (injection)
     implementation "io.insert-koin:koin-android:$koin_version"
-    // jetpack room core
-    implementation "androidx.room:room-runtime:$room_version"
     // coroutines for room
     implementation "androidx.room:room-ktx:$room_version"
     // handles annotations at compile time
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

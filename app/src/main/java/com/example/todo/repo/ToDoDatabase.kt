@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-private const val DB_NAME = "todo.db"
+private const val DB_NAME = "stuff.db"
 
 @Database(entities = [ToDoEntity::class], version = 1)
 @TypeConverters(TypeTransmogrifier::class)

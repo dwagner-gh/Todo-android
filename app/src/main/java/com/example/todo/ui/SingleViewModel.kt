@@ -1,17 +1,34 @@
-package com.example.todo
+package com.example.todo.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.todo.repo.ToDoModel
 import com.example.todo.repo.ToDoRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+
+data class SingleModelViewState(
+    val item: ToDoModel? = null
+)
 
 class SingleModelViewModel(
     private val repo: ToDoRepository,
-    private val modelId: String?
+    modelId: String?
 ) : ViewModel() {
+    val states = repo.find(modelId)
+        .map { SingleModelViewState(it) }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, SingleModelViewState())
 
-    fun getModel() = repo.find(modelId)
-    fun save(model: ToDoModel) = repo.save(model)
+    fun save(model: ToDoModel) {
+        viewModelScope.launch {
+            repo.save(model)
+        }
+    }
     fun delete(model: ToDoModel) {
-        repo.delete(model)
+        viewModelScope.launch {
+            repo.delete(model)
+        }
     }
 }

@@ -10,9 +10,11 @@ import com.example.todo.databinding.TodoEditBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import androidx.core.content.getSystemService
+import androidx.lifecycle.lifecycleScope
 import com.example.todo.R
-import com.example.todo.SingleModelViewModel
+import com.example.todo.ui.SingleModelViewModel
 import com.example.todo.repo.ToDoModel
+import kotlinx.coroutines.flow.collect
 
 class EditFragment : Fragment() {
 
@@ -48,18 +50,24 @@ class EditFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.getModel()?.let { model ->
-            binding?.apply {
-                isCompleted.isChecked = model.isCompleted
-                desc.setText(model.description)
-                notes.setText(model.notes)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.states.collect { state ->
+                if (savedInstanceState == null) { // only if there is no saved state
+                    state.item?.let {
+                        binding?.apply {
+                            isCompleted.isChecked = it.isCompleted
+                            desc.setText(it.description)
+                            notes.setText(it.notes)
+                        }
+                    }
+                }
             }
         }
     }
 
     private fun save() {
         binding?.run {
-            viewModel.getModel()?.copy( // create copy
+            viewModel.states.value.item?.copy( // create copy
                 description = desc.text.toString(),
                 isCompleted = isCompleted.isChecked,
                 notes = notes.text.toString()
@@ -75,10 +83,7 @@ class EditFragment : Fragment() {
         findNavController().popBackStack()
     }
 
-    private fun delete() {
-        val model = viewModel.getModel()
-        model?.let { viewModel.delete(it) }
-    }
+    private fun delete() = viewModel.states.value.item?.let { viewModel.delete(it) }
 
     private fun navToList() {
         // pops up the stack, til it hits rosterListFragment
