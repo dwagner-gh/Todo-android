@@ -1,7 +1,9 @@
 package com.example.todo.repo
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
 
 class ToDoRepository(
@@ -12,8 +14,9 @@ class ToDoRepository(
     // that get executed lazily whenever a new value is emitted into the flow. I. e. this map
     // operation is executed on every new List<ToDoEntity> to create a new List<ToDoModel>.
     // https://developer.android.com/kotlin/flow
-    fun items(): Flow<List<ToDoModel>> =
-        store.all().map { all -> all.map { it.toModel() } }
+    fun items(filterMode: FilterMode = FilterMode.ALL): Flow<List<ToDoModel>> =
+        filteredEntities(filterMode).map { all -> all.map { it.toModel() } }
+        //    .onStart { delay(5000) } delay 5 seconds on flow collection
 
     fun find(id: String?): Flow<ToDoModel?> = store.find(id).map { it?.toModel() }
 
@@ -28,4 +31,12 @@ class ToDoRepository(
             store.delete(ToDoEntity(model))
         }
     }
+
+    private fun filteredEntities(filterMode: FilterMode) = when (filterMode) {
+        FilterMode.ALL -> store.all()
+        FilterMode.OUTSTANDING -> store.filtered(isCompleted = false)
+        FilterMode.COMPLETED -> store.filtered(isCompleted = true)
+    }
 }
+
+enum class FilterMode { ALL, OUTSTANDING, COMPLETED }

@@ -43,10 +43,11 @@ data class ToDoEntity(
         fun all(): Flow<List<ToDoEntity>>
         @Query("SELECT * FROM todos WHERE id = :modelId")
         fun find(modelId: String?): Flow<ToDoEntity?>
+        @Query("SELECT * FROM todos WHERE isCompleted = :isCompleted ORDER BY description")
+        fun filtered(isCompleted: Boolean): Flow<List<ToDoEntity>>
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         suspend fun save(vararg entities: ToDoEntity)
         @Delete
         suspend fun delete(vararg entities: ToDoEntity)
     }
-
 }

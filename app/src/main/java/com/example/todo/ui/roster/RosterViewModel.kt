@@ -4,42 +4,45 @@ import androidx.lifecycle.ViewModel
 // lifecycle aware scope, outstanding coroutines get cancelled when ViewModel gets cleared
 // when is view model cleared?
 import androidx.lifecycle.viewModelScope
+import com.example.todo.repo.FilterMode
 import com.example.todo.repo.ToDoModel
 import com.example.todo.repo.ToDoRepository
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 data class RosterViewState(
-    val items: List<ToDoModel> = listOf()
+    val items: List<ToDoModel> = listOf(),
+    val isLoaded: Boolean = false,
+    val filterMode: FilterMode = FilterMode.ALL
 )
 
 class RosterViewModel(private val repo: ToDoRepository) : ViewModel() {
-    // original version contains a bug, saves() creates a new list in the repository
-    // items would however always point to the old list, with this getter, the view model
-    // always gets the new and updated list of items even after a save
-    val states= repo.items()
-            // here the flow is still cold, no actual observers, flow is still lazy, not holding
-            // on to a state and not sending updates to observers
-            .map { RosterViewState(it) }
-            // makes the flow "hot", it holds on to current state and gives it to new
-            // observers. In addition it emits new states to current observers (flow starts
-            // immediately because of "Eagerly")
-            .stateIn(viewModelScope, SharingStarted.Eagerly, RosterViewState())
+    // offering the View State via a Flow, so the actual view doesn't need to subscribe
+    // to different flows depending on the filter mode (new flow for each filter mode)
+    private val _states = MutableStateFlow(RosterViewState())
+    // read only version of _states; represents the public flow (that can be subscribed to),
+    // while the flows of the repository are kept hidden and are handled by load(). changes of
+    // of repo flows are forwarded to _states via emit()
+    val states = _states.asStateFlow()
 
-//    init {
-//        viewModelScope.launch {
-//            newsRepository.favoriteLatestNews
-//                // Update View with the latest favorite news
-//                // Writes to the value property of MutableStateFlow,
-//                // adding a new element to the flow and updating all
-//                // of its collectors
-//                .collect { favoriteNews ->
-//                    _uiState.value = LatestNewsUiState.Success(favoriteNews)
-//                }
-//        }
-//    }
+    private var job: Job? = null
+
+    // the default behaviour is to load all entities
+    init {
+        load(FilterMode.ALL)
+    }
+
+    fun load(filterMode: FilterMode) {
+        // cancel previous query (no new emits for the previous filter mode)
+        job?.cancel()
+        // start new query for given filter mode, and emit new view state into the states flow
+        job = viewModelScope.launch {
+            repo.items(filterMode).collect {
+                _states.emit(RosterViewState(it, true, filterMode))
+            }
+        }
+    }
 
     fun save(model: ToDoModel) {
         viewModelScope.launch {
