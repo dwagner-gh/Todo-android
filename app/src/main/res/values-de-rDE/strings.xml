@@ -19,4 +19,5 @@
     <string name="msg_empty_filtered">Über das + Icon neue Aufgaben hinzufügen, oder den Filter ändern</string>
     <string name="settings">Einstellungen</string>
     <string name="pref_url_title">Web Dienst URL</string>
+    <string name="oops">Entschuldigung, etwas ist schief gelaufen.</string>
 </resources>

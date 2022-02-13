@@ -83,14 +83,16 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // preferences of jetpack, used to build app settings UI (uses shared prefs)
     implementation "androidx.preference:preference-ktx:1.2.0"
+    // template language for generating html
+    implementation "com.github.jknack:handlebars:4.1.2"
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     // used for testing views
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
     androidTestImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1'
-    testImplementation 'junit:junit:4.13.2'
 
+    testImplementation 'junit:junit:4.13.2'
     testImplementation "org.mockito:mockito-inline:3.12.1"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1'

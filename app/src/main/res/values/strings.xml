@@ -20,4 +20,14 @@
     <string name="web_service_url_key" translatable="false">webServiceUrl</string>
     <string name="web_service_url_default" translatable="false">https://commonsware.com/AndExplore/2.0/items.json</string>
     <string name="settings">Settings</string>
+
+    <!-- handlebars html template string -->
+    <string name="report_template" translatable="false"><![CDATA[<h1>To-Do Items</h1>
+{{#this}}
+<h2>{{description}}</h2>
+<p>{{#completed}}<b>COMPLETED</b> &mdash; {{/completed}}Created on: {{dateFormat createdOn}}</p>
+<p>{{notes}}</p>
+{{/this}}
+]]></string>
+    <string name="oops">Sorry! Something went wrong!</string>
 </resources>
