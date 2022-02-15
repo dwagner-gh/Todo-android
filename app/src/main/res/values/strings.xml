@@ -31,4 +31,5 @@
 ]]></string>
     <string name="oops">Sorry! Something went wrong!</string>
     <string name="menu_share">Share</string>
+    <string name="menu_import">Import</string>
 </resources>

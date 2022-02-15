@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.BuildConfig
 import com.example.todo.repo.FilterMode
+import com.example.todo.repo.PrefsRepository
 import com.example.todo.repo.ToDoModel
 import com.example.todo.repo.ToDoRepository
 import com.example.todo.report.RosterReport
@@ -33,7 +34,8 @@ class RosterViewModel(
     private val repo: ToDoRepository,
     private val report: RosterReport,
     private val context: Application,
-    private val appScope: CoroutineScope
+    private val appScope: CoroutineScope,
+    private val prefs: PrefsRepository
 ) : ViewModel() {
     // offering the View State via a Flow, so the actual view doesn't need to subscribe
     // to different flows depending on the filter mode (new flow for each filter mode)
@@ -95,6 +97,12 @@ class RosterViewModel(
             val contentURI = FileProvider.getUriForFile(context, AUTHORITY, reportFile)
             _states.value.let { report.generate(it.items, contentURI) }
             _navEvents.emit(NavEvent.ShareReport(contentURI))
+        }
+    }
+
+    fun importItems() {
+        viewModelScope.launch {
+            repo.importItems(prefs.loadWebServiceUrl())
         }
     }
 }

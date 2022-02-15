@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
+import okhttp3.OkHttpClient
 import org.hamcrest.Matchers.empty
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.collection.IsIterableContainingInOrder.contains
@@ -21,10 +22,11 @@ class ToDoRepositoryTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
     private val db = ToDoDatabase.newTestInstance(context)
+    private val remoteDataSource = ToDoRemoteDataSource(OkHttpClient())
 
     @Test
     fun canAddItems() = runBlockingTest {
-        val underTest = ToDoRepository(db.todoStore(), this)
+        val underTest = ToDoRepository(db.todoStore(), this, remoteDataSource)
         val results = mutableListOf<List<ToDoModel>>()
         val itemsJob = launch {
             // piping no emits of database to results (list of query results)
@@ -46,7 +48,7 @@ class ToDoRepositoryTest {
 
     @Test
     fun canModifyItems() = runBlockingTest {
-        val underTest = ToDoRepository(db.todoStore(), this)
+        val underTest = ToDoRepository(db.todoStore(), this, remoteDataSource)
         val testModel = ToDoModel("test model")
         val replacement = testModel.copy(notes = "This is the replacement")
         val results = mutableListOf<List<ToDoModel>>()
@@ -67,7 +69,7 @@ class ToDoRepositoryTest {
 
     @Test
     fun canRemoveItems() = runBlockingTest {
-        val underTest = ToDoRepository(db.todoStore(), this)
+        val underTest = ToDoRepository(db.todoStore(), this, remoteDataSource)
         val testModel = ToDoModel("test model")
         val results = mutableListOf<List<ToDoModel>>()
         val itemsJob = launch {

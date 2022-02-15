@@ -146,6 +146,10 @@ class RosterListFragment : Fragment() {
             rosterViewModel.shareReport()
             true
         }
+        R.id.importItems -> {
+            rosterViewModel.importItems()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
