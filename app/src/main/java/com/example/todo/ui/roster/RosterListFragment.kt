@@ -100,6 +100,7 @@ class RosterListFragment : Fragment() {
                 when (navEvent) {
                     // report was saved, open it
                     is NavEvent.ViewReport -> viewReport(navEvent.documentURI)
+                    is NavEvent.ShareReport -> shareReport(navEvent.documentURI)
                 }
             }
         }
@@ -141,6 +142,10 @@ class RosterListFragment : Fragment() {
             saveReport()
             true
         }
+        R.id.share -> {
+            rosterViewModel.shareReport()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -166,6 +171,16 @@ class RosterListFragment : Fragment() {
         safeStartActivity(
             Intent(Intent.ACTION_VIEW, uri)
                 .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        )
+    }
+
+    // are there other intents for sharing?
+    private fun shareReport(documentURI: Uri) {
+        safeStartActivity(
+            Intent(Intent.ACTION_SEND)
+                .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                .setType("text/html")
+                .putExtra(Intent.EXTRA_STREAM, documentURI)
         )
     }
 
