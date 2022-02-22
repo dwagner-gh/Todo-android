@@ -32,4 +32,7 @@
     <string name="oops">Sorry! Something went wrong!</string>
     <string name="menu_share">Share</string>
     <string name="menu_import">Import</string>
+    <string name="retry">Retry</string>
+    <string name="import_error_title">Import Failure</string>
+    <string name="import_error_message">Something went wrong with the import</string>
 </resources>

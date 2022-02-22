@@ -22,4 +22,7 @@
     <string name="oops">Entschuldigung, etwas ist schief gelaufen.</string>
     <string name="menu_share">Teilen</string>
     <string name="menu_import">Importieren</string>
+    <string name="retry">Wiederholen</string>
+    <string name="import_error_title">Import fehlgeschlagen</string>
+    <string name="import_error_message">Etwas ist beim Importieren schiefgelaufen</string>
 </resources>

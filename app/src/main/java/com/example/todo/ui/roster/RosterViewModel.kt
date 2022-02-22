@@ -2,20 +2,25 @@ package com.example.todo.ui.roster
 
 import android.app.Application
 import android.net.Uri
+import android.util.Log
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 // lifecycle aware scope, outstanding coroutines get cancelled when ViewModel gets cleared
 // when is view model cleared?
 import androidx.lifecycle.viewModelScope
+import com.example.todo.AppConstants.LOGGING_TAG
 import com.example.todo.BuildConfig
 import com.example.todo.repo.FilterMode
 import com.example.todo.repo.PrefsRepository
 import com.example.todo.repo.ToDoModel
 import com.example.todo.repo.ToDoRepository
 import com.example.todo.report.RosterReport
+import com.example.todo.ui.ErrorScenario
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.io.File
+import java.io.IOException
+import java.lang.RuntimeException
 
 data class RosterViewState(
     val items: List<ToDoModel> = listOf(),
@@ -49,6 +54,9 @@ class RosterViewModel(
     // shared flow is similar to state flow, but better for events
     private val _navEvents = MutableSharedFlow<NavEvent>()
     val navEvents = _navEvents.asSharedFlow()
+
+    private val _errorEvents = MutableSharedFlow<ErrorScenario>()
+    val errorEvents = _errorEvents.asSharedFlow()
 
     private val AUTHORITY = BuildConfig.APPLICATION_ID + ".provider"
     private var job: Job? = null
@@ -102,7 +110,13 @@ class RosterViewModel(
 
     fun importItems() {
         viewModelScope.launch {
-            repo.importItems(prefs.loadWebServiceUrl())
+            try {
+                repo.importItems(prefs.loadWebServiceUrl())
+            }
+            catch (ex: IOException) {
+                Log.e(LOGGING_TAG, "Exception importing items", ex)
+                _errorEvents.emit(ErrorScenario.Import)
+            }
         }
     }
 }

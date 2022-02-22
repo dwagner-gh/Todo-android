@@ -13,10 +13,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.todo.AppConstants
 import com.example.todo.R
 import com.example.todo.databinding.TodoRosterBinding
 import com.example.todo.repo.FilterMode
 import com.example.todo.repo.ToDoModel
+import com.example.todo.ui.ErrorDialogFragment
+import com.example.todo.ui.ErrorScenario
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,7 +31,6 @@ class RosterListFragment : Fragment() {
     private val createDoc = registerForActivityResult(ActivityResultContracts.CreateDocument()) {
         rosterViewModel.saveReport(it)
     }
-    private val LOGGING_TAG = "ToDo"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +96,7 @@ class RosterListFragment : Fragment() {
             }
 
         }
+
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             // collection of new events
             rosterViewModel.navEvents.collect { navEvent ->
@@ -105,6 +108,29 @@ class RosterListFragment : Fragment() {
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            rosterViewModel.errorEvents.collect { error ->
+                when (error) {
+                    ErrorScenario.Import -> handleImportError()
+                    else -> {}
+                }
+            }
+        }
+
+        // live data is used for both java and kotlin as part of jetpack
+        findNavController()
+            .getBackStackEntry(R.id.rosterListFragment)
+            .savedStateHandle
+            .getLiveData<ErrorScenario>(ErrorDialogFragment.KEY_RETRY)
+            .observe(viewLifecycleOwner) { retryScenario ->
+                when (retryScenario) {
+                    ErrorScenario.Import -> {
+                        clearImportError()
+                        rosterViewModel.importItems()
+                    }
+                    else -> {}
+                }
+            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -166,7 +192,7 @@ class RosterListFragment : Fragment() {
         try {
             startActivity(intent)
         } catch (t: ActivityNotFoundException) {
-            Log.e(LOGGING_TAG, "Exception starting $intent", t)
+            Log.e(AppConstants.LOGGING_TAG, "Exception starting $intent", t)
             Toast.makeText(requireActivity(), R.string.oops, Toast.LENGTH_LONG).show()
         }
     }
@@ -194,5 +220,22 @@ class RosterListFragment : Fragment() {
 
     private fun add() {
         findNavController().navigate(RosterListFragmentDirections.addTodoItem(null))
+    }
+
+    private fun handleImportError() {
+        findNavController().navigate(
+            RosterListFragmentDirections.showError(
+                getString(R.string.import_error_title),
+                getString(R.string.import_error_message),
+                ErrorScenario.Import
+            )
+        )
+    }
+
+    private fun clearImportError() {
+        findNavController()
+            .getBackStackEntry(R.id.rosterListFragment)
+            .savedStateHandle
+            .set(ErrorDialogFragment.KEY_RETRY, ErrorScenario.None)
     }
 }
