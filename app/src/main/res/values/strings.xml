@@ -35,4 +35,6 @@
     <string name="retry">Retry</string>
     <string name="import_error_title">Import Failure</string>
     <string name="import_error_message">Something went wrong with the import</string>
+    <string name="pref_import_title">Import periodically</string>
+    <string name="import_periodic_key" translatable="false">doPeriodicImport</string>
 </resources>
