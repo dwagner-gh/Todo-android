@@ -16,8 +16,25 @@
     <string name="menu_filter_completed">Completed</string>
     <string name="menu_filter_outstanding">Outstanding</string>
     <string name="msg_empty_filtered">Click the + icon to add a todo item, or change your filter to show other items</string>
-    <string name="pref_url_title">Web service URL</string>
-    <string name="web_service_url_key">webServiceUrl</string>
-    <string name="web_service_url_default">https://commonsware.com/AndExplore/2.0/items.json</string>
+    <string name="pref_url_title">Web Service URL</string>
+    <string name="web_service_url_key" translatable="false">webServiceUrl</string>
+    <string name="web_service_url_default" translatable="false">https://commonsware.com/AndExplore/2.0/items.json</string>
     <string name="settings">Settings</string>
+
+    <!-- handlebars html template string -->
+    <string name="report_template" translatable="false"><![CDATA[<h1>To-Do Items</h1>
+{{#this}}
+<h2>{{description}}</h2>
+<p>{{#completed}}<b>COMPLETED</b> &mdash; {{/completed}}Created on: {{dateFormat createdOn}}</p>
+<p>{{notes}}</p>
+{{/this}}
+]]></string>
+    <string name="oops">Sorry! Something went wrong!</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_import">Import</string>
+    <string name="retry">Retry</string>
+    <string name="import_error_title">Import Failure</string>
+    <string name="import_error_message">Something went wrong with the import</string>
+    <string name="pref_import_title">Import periodically</string>
+    <string name="import_periodic_key" translatable="false">doPeriodicImport</string>
 </resources>

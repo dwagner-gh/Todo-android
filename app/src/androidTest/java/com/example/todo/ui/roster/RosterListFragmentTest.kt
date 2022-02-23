@@ -9,11 +9,13 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.example.todo.R
 import com.example.todo.repo.ToDoDatabase
 import com.example.todo.repo.ToDoModel
+import com.example.todo.repo.ToDoRemoteDataSource
 import com.example.todo.repo.ToDoRepository
 import com.example.todo.ui.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.runBlocking
+import okhttp3.OkHttpClient
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.context.loadKoinModules
@@ -33,7 +35,7 @@ class RosterListFragmentTest {
         val db = ToDoDatabase.newTestInstance(context)
         val appScope = CoroutineScope(SupervisorJob())
 
-        repo = ToDoRepository(db.todoStore(), appScope)
+        repo = ToDoRepository(db.todoStore(), appScope, ToDoRemoteDataSource(OkHttpClient()))
 
         // replace repository that would normally be used (this shows why dependency injection
         // is useful, the repository can be changed dynamically depending on the run context)

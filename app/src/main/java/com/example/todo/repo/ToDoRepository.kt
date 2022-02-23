@@ -8,7 +8,8 @@ import kotlinx.coroutines.withContext
 
 class ToDoRepository(
     private val store: ToDoEntity.Store,
-    private val appScope: CoroutineScope
+    private val appScope: CoroutineScope,
+    private val remoteDataSource: ToDoRemoteDataSource
 ) {
     // map is an intermediate operator, intermediate operators set up a chain of operations,
     // that get executed lazily whenever a new value is emitted into the flow. I. e. this map
@@ -36,6 +37,13 @@ class ToDoRepository(
         FilterMode.ALL -> store.all()
         FilterMode.OUTSTANDING -> store.filtered(isCompleted = false)
         FilterMode.COMPLETED -> store.filtered(isCompleted = true)
+    }
+
+    suspend fun importItems(url: String) {
+        withContext(appScope.coroutineContext) {
+            // loading json data into server item and then mapping them to entities
+            store.importItems(remoteDataSource.load(url).map { it.toEntity() })
+        }
     }
 }
 

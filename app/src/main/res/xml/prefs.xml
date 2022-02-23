@@ -8,4 +8,10 @@
         android:title="@string/pref_url_title"
         app:defaultValue="@string/web_service_url_default"/>
 
+    <SwitchPreference
+        app:defaultValue="false"
+        android:key="@string/import_periodic_key"
+        android:title="@string/pref_import_title"
+        />
+
 </PreferenceScreen>

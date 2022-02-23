@@ -17,4 +17,13 @@
     <string name="menu_filter_completed">Erledigt</string>
     <string name="menu_filter_outstanding">Nicht erledigt</string>
     <string name="msg_empty_filtered">Über das + Icon neue Aufgaben hinzufügen, oder den Filter ändern</string>
+    <string name="settings">Einstellungen</string>
+    <string name="pref_url_title">Web Dienst URL</string>
+    <string name="oops">Entschuldigung, etwas ist schief gelaufen.</string>
+    <string name="menu_share">Teilen</string>
+    <string name="menu_import">Importieren</string>
+    <string name="retry">Wiederholen</string>
+    <string name="import_error_title">Import fehlgeschlagen</string>
+    <string name="import_error_message">Etwas ist beim Importieren schiefgelaufen</string>
+    <string name="pref_import_title">Regelmäßiger Import</string>
 </resources>
